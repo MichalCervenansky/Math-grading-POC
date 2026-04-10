@@ -20,4 +20,3 @@ def get_api_key(override: str | None = None) -> str:
 
 
 RESOURCES_DIR = Path(__file__).parent.parent / "resources"
-DEFAULT_RUBRIC_PATH = RESOURCES_DIR / "HODNOTENIE ÚLOH č.4 a 5.txt"

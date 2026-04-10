@@ -1,12 +1,8 @@
-from pathlib import Path
-from unittest.mock import patch
-
 from src.prompts import (
     DEFAULT_RUBRIC_TEXT,
     GRADING_USER_PROMPT,
     TRIAGE_SYSTEM_PROMPT,
     TRIAGE_USER_PROMPT,
-    _load_default_rubric,
     build_grading_system_prompt,
 )
 
@@ -31,13 +27,6 @@ class TestPromptConstants:
     def test_prompts_mention_slovak(self):
         assert "Slovak" in TRIAGE_SYSTEM_PROMPT
         assert "Slovak" in GRADING_USER_PROMPT
-
-
-class TestLoadDefaultRubric:
-    def test_returns_empty_on_missing_file(self):
-        with patch("src.prompts.DEFAULT_RUBRIC_PATH", Path("/nonexistent/file.txt")):
-            result = _load_default_rubric()
-        assert result == ""
 
 
 class TestBuildGradingSystemPrompt:

@@ -1,5 +1,3 @@
-from src.config import DEFAULT_RUBRIC_PATH
-
 TRIAGE_SYSTEM_PROMPT = """\
 You are an expert at analyzing handwritten and scanned documents. Your task is to determine \
 whether a scanned student math exam is legible enough for automated grading.
@@ -23,14 +21,62 @@ Write your assessment reason in Slovak.\
 """
 
 
-def _load_default_rubric() -> str:
-    try:
-        return DEFAULT_RUBRIC_PATH.read_text(encoding="utf-8")
-    except FileNotFoundError:
-        return ""
+DEFAULT_RUBRIC_TEXT = """\
+VŠEOBECNÉ HODNOTENIE MATEMATICKEJ ÚLOHY
 
+Každá úloha sa hodnotí v troch fázach: Rozpoznávanie, Kontrola riešenia a Hodnotenie.
 
-DEFAULT_RUBRIC_TEXT = _load_default_rubric()
+Fáza 1 — Rozpoznávanie
+Z riešenia študenta identifikuj a prepíš všetky údaje: čísla, premenné, rovnice, výrazy, \
+náčrty, tabuľky a grafy presne tak, ako ich študent napísal. Neopravuj chyby ani nedoplňaj \
+chýbajúce časti.
+
+Fáza 2 — Kontrola riešenia
+Nezávisle vypočítaj správne riešenie od začiatku. Porovnaj ho krok za krokom \
+s tým, čo študent napísal (podľa Fázy 1). Označ každý rozdiel — chýbajúce premenné, \
+nesprávne znamienka, chyby vo výpočtoch, neúplné výrazy.
+
+Fáza 3 — Hodnotenie
+Maximum je 5 bodov za úlohu, zložených z 5 nezávislých častí po 1 bode. \
+Každá časť hodnotí inú oblasť riešenia. Každú chybu penalizuj iba v jednej časti — \
+ak chyba spadá do viacerých častí, penalizuj ju v tej najšpecifickejšej.
+
+1. Pochopenie a analýza úlohy (max 1 bod)
+   Študent správne pochopil zadanie a identifikoval, čo sa požaduje.
+   - všetko správne = 1 bod
+   - čiastočne správne (menšie nedostatky v pochopení) = 0,5 bodu
+   - nepochopenie zadania = 0 bodov
+
+2. Postup a metóda riešenia (max 1 bod)
+   Študent zvolil vhodný matematický postup a metódu riešenia.
+   - správny postup = 1 bod
+   - čiastočne správny postup (menšie odchýlky) = 0,5 bodu
+   - nesprávny postup = 0 bodov
+
+3. Správnosť výpočtov a výsledkov (max 1 bod)
+   Všetky výpočty, rovnice a konečné výsledky sú matematicky správne tak, ako sú zapísané.
+   - všetko správne = 1 bod
+   - najviac jedna chyba (nesprávny výpočet, chýbajúca premenná, zlé znamienko) = 0,5 bodu
+   - viac ako jedna chyba = 0 bodov
+
+4. Úplnosť riešenia (max 1 bod)
+   Riešenie obsahuje všetky požadované časti podľa zadania.
+   - všetky časti vyriešené = 1 bod
+   - chýba jedna časť = 0,5 bodu
+   - chýba viac než jedna časť = 0 bodov
+
+5. Grafické znázornenie a softvérová skúška (max 1 bod)
+   Ak zadanie vyžaduje grafické znázornenie (náčrt, graf, obrázok) alebo softvérovú skúšku \
+správnosti, tieto sú prítomné a správne. Ak nie sú požadované, hodnotí sa prehľadnosť \
+a formálna úprava riešenia.
+   - všetko správne a prítomné = 1 bod
+   - čiastočne správne alebo neúplné = 0,5 bodu
+   - chýba alebo je úplne nesprávne = 0 bodov
+
+Celkové hodnotenie: súčet bodov z častí 1 až 5 (max 5 bodov).
+Povolené hodnoty bodov za každú časť: 0, 0.5 alebo 1.
+Celkový súčet bodov musí byť násobok 0,5 (t.j. 0, 0.5, 1.0, 1.5, ..., 4.5, 5.0).\
+"""
 
 _GRADING_INSTRUCTIONS = """
 

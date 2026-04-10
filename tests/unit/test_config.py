@@ -1,7 +1,6 @@
 import pytest
 
 from src.config import (
-    DEFAULT_RUBRIC_PATH,
     GEMINI_MODEL_NAME,
     GENERATION_TEMPERATURE,
     RESOURCES_DIR,
@@ -24,9 +23,6 @@ class TestConstants:
         assert RETRY_MIN_WAIT < RETRY_MAX_WAIT
         assert RETRY_MAX_ATTEMPTS > 0
         assert 0 < GENERATION_TEMPERATURE < 2.0
-
-    def test_default_rubric_path_format(self):
-        assert str(DEFAULT_RUBRIC_PATH).endswith(".txt")
 
     def test_resources_dir_is_path(self):
         from pathlib import Path
